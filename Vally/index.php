@@ -45,13 +45,27 @@ foreach($xml->thread as $thread) {
 
         // ----  Choosing Appropriate Document ---
         //Get the To, From AND CC
-        $from = $email->From;
-        //Split them by , and strip for ' ' then append them to an array of recievers
+        $from = str_replace(array('>','<'), '', $email->From);
+        //Split them by , and strip for ' ' then append them to an array of recievers.
         $to = explode(',',$email->To);
         //If CC exists split and strip then merge with to.
         if(isset($email->Cc)){
             $cc = explode(',',$email->Cc);
             $to = array_merge($to,$cc);
+        }
+        
+        //If there are no documents, let's create one.
+        if(empty($documents)){
+            print_r($to);
+            foreach($to as $receiver){
+                //Trim string
+                $reciever = str_replace(array('>','<'), '',$receiver);
+                $tempDoc = new Document();
+                $tempDoc->senders = [$from,$receiver];
+                $tempDoc->emails = $temp;
+                array_push($documents,$tempDoc);
+                print_r($tempDoc);
+            }
         }
 
 
