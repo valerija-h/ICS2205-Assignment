@@ -1,4 +1,5 @@
 <?php
+//Innclude Porter Stemmer Library by https://tartarus.org/martin/PorterStemmer/php.txt
 include 'stemmer.php';
 
 //Loading the XML File
