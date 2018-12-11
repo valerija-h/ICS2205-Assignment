@@ -1,4 +1,6 @@
 <?php
+include 'stemmer.php';
+
 //Loading the XML File
 $xml = simplexml_load_file("data.xml") or die("Error: Cannot create object");
 
@@ -13,30 +15,25 @@ foreach($xml->thread as $thread) {
     foreach($thread->DOC as $email){
         //The messages in each email - not Quotes.
         $text = $email->Text->content;
-        //Parse the messages by space and store them in temporary array.
+        //Parse the messages by delimiters and store them in temporary array.
         $temp = [];
+
         //Tokenizer to parse text.
-        $tok = strtok($text, " ,-()\n");
+        $tok = strtok($text, " ,-()\n<>");
         while ($tok !== false) {
             //Make word lowercase and strip '.' from end of string!
             $tok = rtrim(strtolower($tok),'.');
             //Check if it is a stop word - if not add to the array!
             if (!in_array($tok, $stopWords)) {
+                //Porter Stemmer Library - gets the stem of the word.
+                $tok = PorterStemmer::Stem($tok);
                 array_push($temp, $tok);
             }
-            $tok = strtok(" ,-()\n");
+            $tok = strtok(" ,-()\n<>");
         }
+
         //Testing print final array.
         print_r($temp);
     }
 }
-
-/* OLD ATTEMPT
-$temp = explode(" ", $text);
-print_r($temp);
-echo "<br><br><br>";
-//If it is one of stop words, ignore.
-$temp = array_diff($temp, $stopWords);
-print_r($temp);
-echo "<br><br><br>"; */
 ?>
