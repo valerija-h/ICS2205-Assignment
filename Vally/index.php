@@ -24,7 +24,7 @@ class Keyword{
 foreach($xml->thread as $thread) {
     //Iterating through each email.
     foreach($thread->DOC as $email){
-        // --- Obtaining Keywords ---- /
+        // -------------- Obtaining Keywords -------------- /
         //The messages in each email - not Quotes.
         $text = $email->Text->content;
         //Parse the messages by delimiters and store them in temporary array.
@@ -43,7 +43,7 @@ foreach($xml->thread as $thread) {
             $tok = strtok(" ,-()\n<>");
         }
 
-        // ----  Choosing Appropriate Document ---
+        // ---------------  Choosing Appropriate Document ---------------
         //Get the To, From AND CC
         $from = str_replace(array('>','<'), '', $email->From);
         //Split them by , and strip for ' ' then append them to an array of recievers.
@@ -53,18 +53,16 @@ foreach($xml->thread as $thread) {
             $cc = explode(',',$email->Cc);
             $to = array_merge($to,$cc);
         }
-        
-        //If there are no documents, let's create one.
-        if(empty($documents)){
-            print_r($to);
-            foreach($to as $receiver){
-                //Trim string
-                $reciever = str_replace(array('>','<'), '',$receiver);
+
+        foreach($to as $receiver) {
+            $reciever = str_replace(array('>','<'), '',$receiver);
+            //Create first object in documents array else append object.
+            if(empty($documents)) {
                 $tempDoc = new Document();
                 $tempDoc->senders = [$from,$receiver];
                 $tempDoc->emails = $temp;
                 array_push($documents,$tempDoc);
-                print_r($tempDoc);
+                print_r($documents);
             }
         }
 
