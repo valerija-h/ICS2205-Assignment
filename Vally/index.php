@@ -8,8 +8,10 @@ $xml = simplexml_load_file("data.xml") or die("Error: Cannot create object");
 //Stop words from https://gist.github.com/sebleier/554280
 $stopWords = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"];
 
+//Where the document objects will be stored.
 $documents = [];
 
+//Some objects that will be needed.
 class Document{
     public $senders=[];
     public $emails=[];
@@ -18,6 +20,24 @@ class Document{
 class Keyword{
     public $str;
     public $freq;
+}
+function addToDoc($from,$receiver,$temp){
+    global $documents;
+    //Check if senders already exist in a doc and merge that to the array.
+    foreach($documents as $document){
+        //If the senders already have a document.
+        if(in_array($from,$document->senders) && in_array($receiver,$document->senders)){
+            //Append them to the current documents and return.
+            $document->emails = array_merge($document->emails,$temp);
+            return;
+        }
+    }
+    //Otherwise make a new Document
+    $tempDoc = new Document();
+    $tempDoc->senders = [$from,$receiver];
+    $tempDoc->emails = $temp;
+    array_push($documents,$tempDoc);
+    return;
 }
 
 //Iterating through each thread.
@@ -55,16 +75,19 @@ foreach($xml->thread as $thread) {
         }
 
         foreach($to as $receiver) {
-            $reciever = str_replace(array('>','<'), '',$receiver);
+            $receiver = str_replace(array('>','<'), '',$receiver);
             //Create first object in documents array else append object.
             if(empty($documents)) {
                 $tempDoc = new Document();
                 $tempDoc->senders = [$from,$receiver];
                 $tempDoc->emails = $temp;
                 array_push($documents,$tempDoc);
-                print_r($documents);
+            } else {
+                //Either creates a new doc or adds to a previous one.
+                addToDoc($from,$receiver,$temp);
             }
         }
+
 
 
 
@@ -79,4 +102,5 @@ foreach($xml->thread as $thread) {
 <?php
     }
 }
+print_r($documents);
 ?>
