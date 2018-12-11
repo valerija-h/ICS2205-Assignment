@@ -14,13 +14,29 @@ foreach($xml->thread as $thread) {
         //The messages in each email - not Quotes.
         $text = $email->Text->content;
         //Parse the messages by space and store them in temporary array.
-        $temp = explode(" ", $text);
+        $temp = [];
+        //Tokenizer to parse text.
+        $tok = strtok($text, " ,-()\n");
+        while ($tok !== false) {
+            //Make word lowercase and strip '.' from end of string!
+            $tok = rtrim(strtolower($tok),'.');
+            //Check if it is a stop word - if not add to the array!
+            if (!in_array($tok, $stopWords)) {
+                array_push($temp, $tok);
+            }
+            $tok = strtok(" ,-()\n");
+        }
+        //Testing print final array.
         print_r($temp);
-        echo "<br><br><br>";
-        //If it is one of stop words, ignore.
-        $temp = array_diff($temp, $stopWords);
-        print_r($temp);
-        echo "<br><br><br>";
     }
 }
+
+/* OLD ATTEMPT
+$temp = explode(" ", $text);
+print_r($temp);
+echo "<br><br><br>";
+//If it is one of stop words, ignore.
+$temp = array_diff($temp, $stopWords);
+print_r($temp);
+echo "<br><br><br>"; */
 ?>
