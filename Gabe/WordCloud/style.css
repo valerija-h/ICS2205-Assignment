@@ -1,2 +1,30 @@
-/* Styles go here */
+h1 {
+    text-align: center;
+    font-style: oblique;
+    font-size: 40px;
+}
 
+.container {
+    overflow: hidden;
+    text-align: center;
+}
+body {
+    background-color: whitesmoke;
+}
+
+.container {
+    background: black;
+    width: 200px;
+    height: 120px;
+    overflow: hidden;
+}
+
+.child {
+    width: 220px;
+    height: 100px;
+    margin: 10px 0 0 -10px;
+    background: white;
+    -moz-border-radius: 100px / 50px;
+    -webkit-border-radius: 100px / 50px;
+    border-radius: 100px / 50px;
+}

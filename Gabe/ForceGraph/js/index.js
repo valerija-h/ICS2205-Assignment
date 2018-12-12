@@ -1,7 +1,7 @@
 try {
   // Configure graphics
   var width = 1000,
-    height = 800;
+    height = 700;
 
   var circleWidth = 5,
     charge = -75,
@@ -18,7 +18,7 @@ try {
 
   // Generate test data
   var nodes = [];
-  var numNodes = 225;
+  var numNodes = 100;
   for (var x = 0; x < numNodes; x++) {
     var targetAry = [];
     var connections = (Math.round(Math.random() * 5));
@@ -76,6 +76,8 @@ try {
       .on("click", function (d) {
           console.log(d);
           alert("You clicked on the link from node " + d.source.id + " to " + d.target.id);
+          window.location = '../WordCloud/index.html';
+
       });
 
   // Create the SVG groups for the nodes and their labels
@@ -117,8 +119,8 @@ try {
           if(links[x].target.id === d.id) {
             // Highlight the connections to this node
             d3.selectAll('.to_' + links[x].target.id)
-              .attr('stroke', palette.orange)
-              .attr('stroke-width', 2)
+              .attr('stroke', palette.purple)
+              .attr('stroke-width', 7)
             
             // Highlight the nodes connected to this one
             d3.select('#node_' + links[x].source.id).select('text')
@@ -131,7 +133,7 @@ try {
       // Highlight the connections from this node
       d3.selectAll('.line_' + d.id)
     		.attr('stroke', palette.purple)
-      	.attr('stroke-width', 3)
+      	.attr('stroke-width', 7)
 
       // When mousing over a node, 
       // make it more repulsive so it stands out
@@ -183,9 +185,10 @@ try {
       if (i < (numNodes / 3)) {
         return palette.orange
       } else if (i < (numNodes - (numNodes / 3))) {
-        return palette.purple
+        return palette.orange
       }
-      return palette.yellowgreen
+        return palette.orange
+
     })
 
   // Create the SVG text to label the nodes
