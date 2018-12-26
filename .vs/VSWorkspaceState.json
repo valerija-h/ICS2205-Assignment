@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Gabe",
-    "\\Gabe\\js"
+    "\\Gabe\\ForceGraph",
+    "\\Gabe\\ForceGraph\\css",
+    "\\Gabe\\WordCloud"
   ],
-  "SelectedNode": "\\Gabe\\js\\index.js",
+  "SelectedNode": "\\Gabe\\ForceGraph\\index.html",
   "PreviewInSolutionExplorer": false
 }
