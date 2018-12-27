@@ -28,6 +28,7 @@ addFreq();
 getWeights();
 print_r($documents);
 
+
 //Appends the keywords to an existing document or creates a new one and appends it.
 function appendToDoc($from,$receiver,$temp){
     global $documents;
