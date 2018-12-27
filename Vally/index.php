@@ -21,7 +21,12 @@ class Keyword{
     public $str;
     public $freq;
 }
-function addToDoc($from,$receiver,$temp){
+
+parseDocument($xml);
+print_r($documents);
+
+//Appends the keywords to an existing document or creates a new one and appends it.
+function appendToDoc($from,$receiver,$temp){
     global $documents;
     //Check if senders already exist in a doc and merge that to the array.
     foreach($documents as $document){
@@ -32,75 +37,74 @@ function addToDoc($from,$receiver,$temp){
             return;
         }
     }
-    //Otherwise make a new Document
+    //Otherwise make a new Document and add it to the global array.
     $tempDoc = new Document();
     $tempDoc->senders = [$from,$receiver];
     $tempDoc->emails = $temp;
     array_push($documents,$tempDoc);
-    return;
 }
 
-//Iterating through each thread.
-foreach($xml->thread as $thread) {
-    //Iterating through each email.
-    foreach($thread->DOC as $email){
-        // -------------- Obtaining Keywords -------------- /
-        //The messages in each email - not Quotes.
-        $text = $email->Text->content;
-        //Parse the messages by delimiters and store them in temporary array.
-        $temp = [];
-        //Tokenizer to parse text.
-        $tok = strtok($text, " ,-()\n<>");
-        while ($tok !== false) {
-            //Make word lowercase and strip '.' from end of string!
-            $tok = rtrim(strtolower($tok),'.');
-            //Check if it is a stop word - if not add to the array!
-            if (!in_array($tok, $stopWords)) {
-                //Porter Stemmer Library - gets the stem of the word.
-                $tok = PorterStemmer::Stem($tok);
-                array_push($temp, $tok);
-            }
-            $tok = strtok(" ,-()\n<>");
+function addToDoc($to,$from,$temp){
+    global $documents;
+    foreach($to as $receiver) {
+        $receiver = str_replace(array('>','<'), '',$receiver);
+        //Create first object in documents array else appends/merges a document object.
+        if(empty($documents)) {
+            $tempDoc = new Document();
+            $tempDoc->senders = [$from,$receiver];
+            $tempDoc->emails = $temp;
+            array_push($documents,$tempDoc);
+        } else {
+            //Either creates a new doc or adds to a previous one.
+            appendToDoc($from,$receiver,$temp);
         }
-
-        // ---------------  Choosing Appropriate Document ---------------
-        //Get the To, From AND CC
-        $from = str_replace(array('>','<'), '', $email->From);
-        //Split them by , and strip for ' ' then append them to an array of recievers.
-        $to = explode(',',$email->To);
-        //If CC exists split and strip then merge with to.
-        if(isset($email->Cc)){
-            $cc = explode(',',$email->Cc);
-            $to = array_merge($to,$cc);
-        }
-
-        foreach($to as $receiver) {
-            $receiver = str_replace(array('>','<'), '',$receiver);
-            //Create first object in documents array else append object.
-            if(empty($documents)) {
-                $tempDoc = new Document();
-                $tempDoc->senders = [$from,$receiver];
-                $tempDoc->emails = $temp;
-                array_push($documents,$tempDoc);
-            } else {
-                //Either creates a new doc or adds to a previous one.
-                addToDoc($from,$receiver,$temp);
-            }
-        }
-
-
-
-
-        //Testing print final array.
-        //print_r($temp);
-
-        //Add the PHP array to a JS Array ?>
-        <!-- <script>
-            var object = <?php echo json_encode($temp) ?>;
-            console.log(object);
-        </script> -->
-<?php
     }
 }
-print_r($documents);
+
+//Returns an array of clean key words - without stop words, unwanted characters and stemmed.
+function cleanUpMsg($message){
+    global $stopWords;
+    $temp = [];
+    //Tokenizer to parse text.
+    $tok = strtok($message, " ,-()\n<>");
+    while ($tok !== false) {
+        //Make word lowercase and strip '.' from end of string!
+        $tok = rtrim(strtolower($tok),'.');
+        //Check if it is a stop word - if not add to the array!
+        if (!in_array($tok, $stopWords)) {
+            //Porter Stemmer Library - gets the stem of the word.
+            $tok = PorterStemmer::Stem($tok);
+            array_push($temp, $tok);
+        }
+        $tok = strtok(" ,-()\n<>");
+    }
+    return $temp;
+}
+
+
+function parseDocument($xml){
+    //Function that returns a document object.
+    //Iterating through each thread.
+    foreach($xml->thread as $thread) {
+        //Iterating through each email.
+        foreach($thread->DOC as $email){
+            // -------------- Obtaining Keywords -------------- /
+            //The messages in each email - not Quotes.
+            $text = $email->Text->content;
+            $temp = cleanUpMsg($text);
+
+            // ---------------  Choosing Appropriate Document ---------------
+            //Get the To, From AND CC
+            $from = str_replace(array('>','<'), '', $email->From);
+            //Split them by , and strip for ' ' then append them to an array of recievers.
+            $to = explode(',',$email->To);
+            //If CC exists split and strip then merge with to.
+            if(isset($email->Cc)){
+                $cc = explode(',',$email->Cc);
+                $to = array_merge($to,$cc);
+            }
+            addToDoc($to,$from,$temp);
+        }
+    }
+}
 ?>
