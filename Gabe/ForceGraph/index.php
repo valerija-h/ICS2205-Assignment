@@ -51,10 +51,10 @@ parseDocument($xml);
    
 	
 	    try {
-		    console.log(documents[0])
+		    console.log(documents);
 	      // Configure graphics
 	      var width = 1000,
-		    height = 700;
+		    height = 1000;
 
 	      var circleWidth = 5,
 		    charge = -75,
@@ -71,19 +71,23 @@ parseDocument($xml);
 
 	      // Generate test data
 	      var nodes = [];
-	      var numNodes = 150;
+
+	      var numNodes = documents.length;
+
 	      for (var x = 0; x < numNodes; x++) {
 		    var targetAry = [];
-		    var connections = (Math.round(Math.random() * 5));
+		    var connections = (documents[x].senders.length);
 		    for (var y = 0; y < connections; y++) {
-		      targetAry.push(Math.round(Math.random() * numNodes))
+		      targetAry.push( documents[x].senders[y])
 		    }
-		    nodes.push({
-		      id: x,
-		      name: "Node " + x,
-		      target: targetAry
-		    })
+		            nodes.push({
+		              id: documents[x].senders[0],
+		              name: "Node " + x,
+		              target: targetAry
+		            })
+           
 	      }
+
 
 	      // Create the links array from the generated data
 	      var links = [];
