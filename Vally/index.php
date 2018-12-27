@@ -15,6 +15,7 @@ $documents = [];
 class Document{
     public $senders=[];
     public $emails=[];
+    public $freqs=[];
     public $final=[];
 }
 class Keyword{
@@ -23,6 +24,8 @@ class Keyword{
 }
 
 parseDocument($xml);
+addFreq();
+getWeights();
 print_r($documents);
 
 //Appends the keywords to an existing document or creates a new one and appends it.
@@ -81,7 +84,6 @@ function cleanUpMsg($message){
     return $temp;
 }
 
-
 function parseDocument($xml){
     //Function that returns a document object.
     //Iterating through each thread.
@@ -104,6 +106,45 @@ function parseDocument($xml){
                 $to = array_merge($to,$cc);
             }
             addToDoc($to,$from,$temp);
+        }
+    }
+}
+
+//Adds frequencies to each document, kye-value array of word and frequency in document.
+function addFreq(){
+    global $documents;
+    foreach($documents as $document){
+        $keywords = $document->emails;
+        $document->freqs = array_count_values($keywords);
+    }
+}
+
+//Returns number of documents containing the word.
+function getOverallFreq($word){
+    $docNumber = 0;
+    // $totalFreq = 0;
+    global $documents;
+    foreach($documents as $document){
+        //If word exists ind ocument, add it's frequnecy to total frequency.
+        if(array_key_exists($word,$document->freqs)){
+            // $totalFreq += $document->freqs[$word];
+            $docNumber++;
+        }
+    }
+    return $docNumber;
+}
+
+function  getWeights(){
+    global $documents;
+    $totalDoc = sizeof($documents);
+    foreach($documents as $document){
+        //For each word in the document calculate the weights.
+        foreach($document->freqs as $key => $value){
+            $weighted = new keyWord();
+            $weighted->str = $key;
+            $TFIDF = round($value * log($totalDoc/getOverallFreq($key)));
+            $weighted->freq = $TFIDF;
+            array_push($document->final,$weighted);
         }
     }
 }
