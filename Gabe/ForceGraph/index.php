@@ -108,11 +108,12 @@ parseDocument($xml);
 		  status = 0;
 		  status2 = 0;
 		  for(var x = 0; x<emails.length; x++){
+		  
 			var email = emails[x];
 			var targets = [];
 			for(var y = 0; y<communicators.length; y++){
-				if(emails[0]==communicators[y][0] || emails[0]==communicators[y][1]){
-					if(emails[0]==communicators[y][0]){
+				if(emails[x]==communicators[y][0] || emails[x]==communicators[y][1]){
+					if(emails[x]==communicators[y][0]){
 						targets.push(communicators[y][1]);
 					}
 					else{
@@ -127,7 +128,6 @@ parseDocument($xml);
 		  }
 
 			
-		  console.log(node);
 	      // Configure graphics
 	      var width = 1000,
 		    height = 1000;
@@ -148,36 +148,42 @@ parseDocument($xml);
 	      // Generate test data
 	      var nodes = [];
 
-	      var numNodes = emails.length;
-
+	      var numNodes = node.length;
+		  
 	      for (var x = 0; x < numNodes; x++) {
 		    var targetAry = [];
-		    var connections = (2);
+		    var connections = node[x].target.length;
 		    for (var y = 0; y < connections; y++) {
-		      targetAry.push( emails[x])
+		      targetAry.push( node[x].target[y])
 		    }
 		            nodes.push({
-		              id: emails[x],
-		              name: "Node " + x,
+		              id: node[x].sender,
+		              name: node[x].sender,
 		              target: targetAry
 		            })
            
 	      }
 
-
+		  console.log(node);
 	      // Create the links array from the generated data
 	      var links = [];
 	      for (var i = 0; i < nodes.length; i++) {
 		    if (nodes[i].target !== undefined) {
 		      for (var j = 0; j < nodes[i].target.length; j++) {
-			    links.push({
-			      source: nodes[i],
-			      target: nodes[nodes[i].target[j]]
-			    })
+				for(var k = 0; k < nodes.length; k++){
+					if(nodes[i].target[j]==nodes[k].id){
+						  links.push({
+						  source: nodes[i],
+						  target: nodes[k]
+						})
+					}
+				}	
+
 		      }
 		    }
 	      }
-
+		  console.log(links);
+		  
 	      // Create SVG
 	      var fdGraph = d3.select('#graphic')
 		    .append('svg')
@@ -209,7 +215,7 @@ parseDocument($xml);
 		      .on("click", function (d) {
 			      console.log(d);
 			      alert("You clicked on the link from node " + d.source.id + " to " + d.target.id);
-			      window.location = '../WordCloud/index.html';
+			      //window.location = '../WordCloud/index.html';
 
 		      });
 
