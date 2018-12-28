@@ -62,7 +62,7 @@ parseDocument($xml);
 				}
 				else{
 					for(var y = 0; y < emails.length; y++){
-						if(documents[x].senders[0] === emails[y]){
+						if(documents[x].senders[0] == emails[y]){
 							status = 1;
 							break;
 						}
@@ -72,7 +72,7 @@ parseDocument($xml);
 						
 					}
 					for(var y = 0; y < emails.length; y++){
-						if(documents[x].senders[1] === emails[y]){
+						if(documents[x].senders[1] == emails[y]){
 							status2 = 1;
 							break;
 						}
@@ -96,8 +96,38 @@ parseDocument($xml);
 
 				}
 			}
+		  // array of communicators
+		  var communicators = [];
+		  var array1 = [];
+		  for(var x = 0; x < documents.length; x++){
+			communicators.push(documents[x].senders);
+		  }
+
+		  var node = [];
+		  
+		  status = 0;
+		  status2 = 0;
+		  for(var x = 0; x<emails.length; x++){
+			var email = emails[x];
+			var targets = [];
+			for(var y = 0; y<communicators.length; y++){
+				if(emails[0]==communicators[y][0] || emails[0]==communicators[y][1]){
+					if(emails[0]==communicators[y][0]){
+						targets.push(communicators[y][1]);
+					}
+					else{
+						targets.push(communicators[y][1]);
+					}
+				}
+			}
+			node.push({
+				sender: email,
+				target: targets,
+			})
+		  }
+
 			
-		  console.log(emails.length);
+		  console.log(node);
 	      // Configure graphics
 	      var width = 1000,
 		    height = 1000;
