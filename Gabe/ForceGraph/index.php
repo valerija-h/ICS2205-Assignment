@@ -48,10 +48,56 @@ parseDocument($xml);
         newDoc["keywords"] = keywords;
         documents.push(newDoc);
         <?php } ?>
-   
+		
 	
 	    try {
-		    console.log(documents);
+			// removing any redunndant emails
+			var emails = [];
+			var status = 0
+			var status2 = 0;
+			for(var x = 0; x < documents.length; x++){
+				if(x == 0){
+					emails.push(documents[x].senders[0]);
+					emails.push(documents[x].senders[1]);
+				}
+				else{
+					for(var y = 0; y < emails.length; y++){
+						if(documents[x].senders[0] === emails[y]){
+							status = 1;
+							break;
+						}
+						else{
+							status = 0;
+						}
+						
+					}
+					for(var y = 0; y < emails.length; y++){
+						if(documents[x].senders[1] === emails[y]){
+							status2 = 1;
+							break;
+						}
+						else{
+							status2 = 0;
+						}
+						
+					}
+					if(status == 0){
+						emails.push(documents[x].senders[0]);
+					}
+					else{
+						//nothing
+					}
+					if(status2 == 0){
+						emails.push(documents[x].senders[1]);
+					}
+					else{
+						//nothing
+					}
+
+				}
+			}
+			
+		  console.log(emails.length);
 	      // Configure graphics
 	      var width = 1000,
 		    height = 1000;
@@ -72,16 +118,16 @@ parseDocument($xml);
 	      // Generate test data
 	      var nodes = [];
 
-	      var numNodes = documents.length;
+	      var numNodes = emails.length;
 
 	      for (var x = 0; x < numNodes; x++) {
 		    var targetAry = [];
-		    var connections = (documents[x].senders.length);
+		    var connections = (2);
 		    for (var y = 0; y < connections; y++) {
-		      targetAry.push( documents[x].senders[y])
+		      targetAry.push( emails[x])
 		    }
 		            nodes.push({
-		              id: documents[x].senders[0],
+		              id: emails[x],
 		              name: "Node " + x,
 		              target: targetAry
 		            })
