@@ -46,7 +46,9 @@ function getEmails($strings){
     foreach($strings as $string){
         $email = getEmail($string);
         //strip and append email to array
-        array_push($emails,$email);
+        if($email != ""){
+            array_push($emails,$email);
+        }
     }
     return $emails;
 }
