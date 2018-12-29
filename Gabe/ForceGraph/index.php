@@ -158,30 +158,54 @@ parseDocument($xml);
 		    }
 		            nodes.push({
 		              id: node[x].sender,
-		              name: node[x].sender,
+		              name: "node" + x,
 		              target: targetAry
 		            })
            
 	      }
-
-		  console.log(node);
+		  
+		  console.log(nodes[0]);
 	      // Create the links array from the generated data
 	      var links = [];
+		  //loops through all the nodes
 	      for (var i = 0; i < nodes.length; i++) {
+			status = 0;
 		    if (nodes[i].target !== undefined) {
+			//loops through the array of target of each node
 		      for (var j = 0; j < nodes[i].target.length; j++) {
+				
+				//add the target node to the node as link
 				for(var k = 0; k < nodes.length; k++){
-					if(nodes[i].target[j]==nodes[k].id){
-						  links.push({
-						  source: nodes[i],
-						  target: nodes[k]
-						})
-					}
+					//console.log(node[k]);
+					//for(var l = 0; l < links)
+						if(nodes[i].target[j]==nodes[k].id && status == 0){
+							status = 1
+							  links.push({
+							  source: nodes[i],
+							  target: nodes[k]
+							})
+						}
 				}	
 
 		      }
 		    }
 	      }
+		  //removing links that source and target are equal 
+		  for(var x = 0; x<links.length;x++){
+				if(links[x].source.id == links[x].target.id){
+					links.splice(x,1);
+				}		  
+		  }
+		  
+			//removed links of target that had itself as a target
+			for(var x = 0; x<links.length;x++){
+				for(var y = 0; y<links[x].target.target.length;y++){
+					if(links[x].target.id == links[x].target.target[y]){
+						 links[x].target.target.splice(y,1);
+					}	
+				}
+			}
+
 		  console.log(links);
 		  
 	      // Create SVG
@@ -215,7 +239,7 @@ parseDocument($xml);
 		      .on("click", function (d) {
 			      console.log(d);
 			      alert("You clicked on the link from node " + d.source.id + " to " + d.target.id);
-			      //window.location = '../WordCloud/index.html';
+			      window.location = '../WordCloud/index.html';
 
 		      });
 
