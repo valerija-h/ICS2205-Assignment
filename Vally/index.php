@@ -9,6 +9,7 @@ $documents = [];
 
 //Parse the $xml file and documents is stored with an array of documents objects.
 parseDocument($xml);
+printSenders();
 //print_r($documents);
 
 ?>
@@ -25,6 +26,6 @@ parseDocument($xml);
     newDoc["keywords"] = keywords;
     documents.push(newDoc);
     <?}?>
-    
+
     console.log(documents);
 </script>

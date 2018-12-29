@@ -26,6 +26,30 @@ class Keyword{
     public $weight;
 }
 
+function getEmail($string){
+    //Split by spaces
+    $tokens = explode(" ", $string);
+    $email = "";
+    //Get the token with the email.
+    foreach($tokens as $token){
+        if (strpos($token, '@') !== false) {
+            $email = $token;
+            break;
+        }
+    }
+    //strip and return email
+    return trim($email,"\"'");
+}
+
+function getEmails($strings){
+    $emails = [];
+    foreach($strings as $string){
+        $email = getEmail($string);
+        //strip and append email to array
+        array_push($emails,$email);
+    }
+    return $emails;
+}
 
 //Appends the keywords to an existing document or creates a new one and appends it.
 function appendDoc($from, $receiver, $keywords){
@@ -102,6 +126,8 @@ function parseDocument($xml){
                 $cc = explode(',',$email->Cc);
                 $to = array_merge($to,$cc);
             }
+            $to = getEmails($to);
+            $from = getEmail($from);
             createDoc($from, $to, $keywords);
         }
     }
@@ -145,6 +171,14 @@ function getDocNo($word){
         }
     }
     return $docNumber;
+}
+
+function printSenders(){
+    global $documents;
+    foreach($documents as $document){
+        print_r($document->senders);
+        echo "\n";
+    }
 }
 
 ?>
