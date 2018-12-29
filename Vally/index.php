@@ -9,7 +9,8 @@ $documents = [];
 
 //Parse the $xml file and documents is stored with an array of documents objects.
 parseDocument($xml);
-printSenders();
+//printSenders();
+getLinks();
 //print_r($documents);
 
 

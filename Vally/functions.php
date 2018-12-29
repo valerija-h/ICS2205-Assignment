@@ -27,8 +27,8 @@ class Keyword{
 }
 
 function getEmail($string){
-    //Split by spaces
-    $tokens = explode(" ", $string);
+    //Split by spaces and ( ).
+    $tokens = multiexplode(array(" ",")","("), $string);
     $email = "";
     //Get the token with the email.
     foreach($tokens as $token){
@@ -179,6 +179,42 @@ function printSenders(){
         print_r($document->senders);
         echo "\n";
     }
+}
+
+function getSenders(){
+    $senders = [];
+    global $documents;
+    foreach($documents as $document){
+       foreach($document->senders as $sender){
+           if(!in_array($sender, $senders)){
+               array_push($senders, $sender);
+           }
+        }
+    }
+    return $senders;
+}
+
+function getLinks(){
+    $senders = getSenders();
+    global $documents;
+    //for each sender
+    //check in documents how many times they appear in a documents array.
+    //print out name and frequency
+    foreach($senders as $key=>$sender){
+        $frequency = 0;
+        foreach($documents as $document){
+            if(in_array($sender,$document->senders)){
+                $frequency += 1;
+            }
+        }
+        echo $key. ". " . $sender . " Frequency: " . $frequency . "<br><br>";
+    }
+}
+
+function multiexplode ($delimiters,$string) {
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
 }
 
 ?>
