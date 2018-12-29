@@ -156,9 +156,10 @@ parseDocument($xml);
 		    for (var y = 0; y < connections; y++) {
 		      targetAry.push( node[x].target[y])
 		    }
+				var ids = node[x].sender.replace(/\s/g,'');
 		            nodes.push({
 		              id: node[x].sender,
-		              name: "node" + x,
+		              name: x,
 		              target: targetAry
 		            })
            
@@ -239,7 +240,7 @@ parseDocument($xml);
 		      .on("click", function (d) {
 			      console.log(d);
 			      alert("You clicked on the link from node " + d.source.id + " to " + d.target.id);
-			      window.location = '../WordCloud/index.html';
+			      window.location = '../WordCloud/index.php';
 
 		      });
 
@@ -262,7 +263,7 @@ parseDocument($xml);
 
 		      // Highlight the current node
 		      d3.select(this).select('text')
-			    .attr('font-size', '16')
+			    .attr('font-size', '50')
 			    .attr('font-weight', 'bold')
       
 		      // Hightlight the nodes that the current node connects to
@@ -280,10 +281,11 @@ parseDocument($xml);
 		      for(var x = 0; x < links.length; x++) {
 			    if(links[x].target !== undefined) {
 			      if(links[x].target.id === d.id) {
+					console.log("hovering");
 				    // Highlight the connections to this node
-				    d3.selectAll('.to_' + links[x].target.id)
+				    d3.selectAll('.to_' + links[x].target.id)//
 				      .attr('stroke', palette.purple)
-				      .attr('stroke-width', 7)
+				      .attr('stroke-width', 20)
             
 				    // Highlight the nodes connected to this one
 				    d3.select('#node_' + links[x].source.id).select('text')
@@ -292,11 +294,11 @@ parseDocument($xml);
 			      }
 			    }
 		      }
-      
+			
 		      // Highlight the connections from this node
 		      d3.selectAll('.line_' + d.id)
     			    .attr('stroke', palette.purple)
-      		    .attr('stroke-width', 7)
+      		    .attr('stroke-width', 20)
 
 		      // When mousing over a node, 
 		      // make it more repulsive so it stands out
