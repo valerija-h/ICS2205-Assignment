@@ -27,18 +27,20 @@ class Keyword{
 }
 
 function getEmail($string){
+    //If its surround by "" ignore it
     //Split by spaces and ( ).
     $tokens = multiexplode(array(" ",")","("), $string);
     $email = "";
     //Get the token with the email.
     foreach($tokens as $token){
-        if (strpos($token, '@') !== false) {
+        //Check if @ exists and last and beginning character isnt "
+        if (strpos($token, '@') !== false && substr($token, -1) !== '"' && substr($token, 0, 1) !== '"') {
             $email = $token;
             break;
         }
     }
-    //strip and return email
-    return trim($email,"\"'");
+    //strip and return email and convert to lower case
+    return strtolower(trim($email,"\"'"));
 }
 
 function getEmails($strings){
@@ -74,6 +76,7 @@ function appendDoc($from, $receiver, $keywords){
 
 function createDoc($from, $receivers, $keywords){
     global $documents;
+    //For each reciever create or append a document.
     foreach($receivers as $receiver) {
         $receiver = str_replace(array('>','<'), '', $receiver);
         //Create first object in documents array else appends/merges a document object.
