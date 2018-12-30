@@ -30,10 +30,16 @@
 				const param=getParameterByName('words',window.location.search);
 			  const urlParams = new URLSearchParams(window.location.search);
 				const myParam = urlParams.get('words');
-			  const keywords=JSON.parse(param);
+			  var keywords=JSON.parse(param);
+			  console.log(keywords);
 			      // as attributes has text: and size:
 				var frequency_list = [];
-	
+				for(var x = 0; x < keywords.length; x++){
+					frequency_list.push({
+						text: keywords[x].word,
+						size: keywords[x].weight+"4"
+					});
+				}
 				
 					var w = 960,
 						h = 600;
