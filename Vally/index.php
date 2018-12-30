@@ -12,6 +12,7 @@ parseDocument($xml);
 //printSenders();
 getLinks();
 //print_r($documents);
+//echo sizeof($documents);
 
 
 ?>
