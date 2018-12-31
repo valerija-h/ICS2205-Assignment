@@ -212,7 +212,7 @@ parseDocument($xml);
 				  for(var x = 0; x< communicators.length; x++){
 					if((d.source.id == communicators[x].senders[0] || d.source.id == communicators[x].senders[1] ) && (d.target.id == communicators[x].senders[0] || d.target.id == communicators[x].senders[1])){
 						//console.log(communicators[x].keywords);
-						words = communicators[x].keywords;
+						words=(communicators[x].keywords);
                         
 						window.location = '../WordCloud/index.php' + '?words=' + JSON.stringify(words);
 					}

@@ -27,17 +27,19 @@
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }				
-				const param=getParameterByName('words',window.location.search);
+				const param=getParameterByName('words',window.location.href);
 			  const urlParams = new URLSearchParams(window.location.search);
+			  
 				const myParam = urlParams.get('words');
-			  var keywords=JSON.parse(param);
-			  console.log(keywords);
+				console.log(myParam);
+			  var keywords=JSON.parse(myParam);
+			  
 			      // as attributes has text: and size:
 				var frequency_list = [];
 				for(var x = 0; x < keywords.length; x++){
 					frequency_list.push({
 						text: keywords[x].word,
-						size: keywords[x].weight+"4"
+						size: keywords[x].weight + "2"
 					});
 				}
 				
