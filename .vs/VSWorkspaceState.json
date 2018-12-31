@@ -3,8 +3,11 @@
     "",
     "\\Gabe",
     "\\Gabe\\ForceGraph",
-    "\\Gabe\\WordCloud"
+    "\\Gabe\\ForceGraph\\scripts",
+    "\\Gabe\\WordCloud",
+    "\\Gabe\\WordCloud\\css",
+    "\\Gabe\\WordCloud\\Scripts"
   ],
-  "SelectedNode": "\\Gabe\\ForceGraph",
+  "SelectedNode": "\\Gabe\\ForceGraph\\scripts",
   "PreviewInSolutionExplorer": false
 }
