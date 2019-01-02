@@ -10,10 +10,20 @@ $documents = [];
 //Parse the $xml file and documents is stored with an array of documents objects.
 parseDocument($xml);
 
+$keywords = [];
+
+setcookie('your_cookie_name', json_encode($keywords), time()+3600);
 
 ?>
 
  <script>
+
+ function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
         var documents = [];
         var words = [];
         //Appending eahc document from php to the JS documents array.
@@ -214,11 +224,11 @@ parseDocument($xml);
 						//console.log(communicators[x].keywords);
 						words = communicators[x].keywords;
 						var params = JSON.stringify(words); 
-					
-                         window.open("index2.php?words=" + params); 
-						console.log(params);
-      
-       
+
+						setCookie('myCookie',params,365);
+						
+						console.log(document.cookie);
+                        window.open("index2.php"); 
 						//window.location.assign('../WordCloud/index.php' + '?words=' + JSON.stringify(words));
 					}
 				  }

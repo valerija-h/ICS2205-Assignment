@@ -1,7 +1,22 @@
- <script>
-			  
-	var url = new URL(window.location.href);
-	let myParam = url.searchParams.get("words");		 
+<script>
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+	var myParam = getCookie('myCookie');
+	console.log(myParam);
+	//var url = new URL(window.location.href);
+	//let myParam = url.searchParams.get("words");		 
 			  
 	//let myParam = urlParams.get('words');
 
@@ -27,6 +42,7 @@
 
 		while(status){
 			if(myParam.charAt(n) === '}'){
+				myParam = myParam.slice(0,n);
 				myParam = myParam + "]";
 				status = false;
 			}
