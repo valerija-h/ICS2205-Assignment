@@ -6,8 +6,8 @@
     "\\Gabe\\ForceGraph\\scripts",
     "\\Gabe\\WordCloud",
     "\\Gabe\\WordCloud\\css",
-    "\\Gabe\\WordCloud\\Scripts"
+    "\\Gabe\\WordCloud\\scripts"
   ],
-  "SelectedNode": "\\Gabe\\ForceGraph\\scripts",
+  "SelectedNode": "\\Gabe\\WordCloud\\scripts\\script.php",
   "PreviewInSolutionExplorer": false
 }

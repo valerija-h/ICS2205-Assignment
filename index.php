@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <title>D3 Force Directed Graph</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="Gabe/ForceGraph/css/style.css">
 
 </head>
 
@@ -23,7 +23,7 @@
   </div>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 </body>
-   <?php require '../ForceGraph/scripts/script.php'; ?>
+   <?php require 'Gabe/ForceGraph/scripts/script.php'; ?>
     
 	
 </body>

@@ -1,8 +1,8 @@
 <?php
-include '../../Vally/functions.php';
+include 'Vally/functions.php';
 
 //Loading the XML File
-$xml = simplexml_load_file("../../Vally/data.xml") or die("Error: Cannot create object");
+$xml = simplexml_load_file("Vally/data.xml") or die("Error: Cannot create object");
 
 //Where the document objects will be stored.
 $documents = [];
@@ -213,8 +213,13 @@ parseDocument($xml);
 					if((d.source.id == communicators[x].senders[0] || d.source.id == communicators[x].senders[1] ) && (d.target.id == communicators[x].senders[0] || d.target.id == communicators[x].senders[1])){
 						//console.log(communicators[x].keywords);
 						words = communicators[x].keywords;
-
-						window.location.replace('../WordCloud/index.php' + '?words=' + JSON.stringify(words));
+						var params = JSON.stringify(words); 
+					
+                         window.open("index2.php?words=" + params); 
+						console.log(params);
+      
+       
+						//window.location.assign('../WordCloud/index.php' + '?words=' + JSON.stringify(words));
 					}
 				  }
 				  //changing webpage
@@ -229,7 +234,6 @@ parseDocument($xml);
   		    .attr('id', function(d) { return 'node_' + d.id })
 		      .attr('class', 'node')
 		      .on("click", function (d) {
-			      console.log(d);
 			      alert("You clicked on node " + d.id);
 		      })
 		    .on('mouseover', function(d) {
@@ -259,7 +263,6 @@ parseDocument($xml);
 		      for(var x = 0; x < links.length; x++) {
 			    if(links[x].target !== undefined) {
 			      if(links[x].target.id === d.id) {
-					console.log("hovering");
 				    // Highlight the connections to this node
 				    d3.selectAll('.to_' + links[x].target.id)//
 				      .attr('stroke', palette.purple)
