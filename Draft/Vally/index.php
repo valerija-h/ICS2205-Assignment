@@ -13,6 +13,7 @@ parseDocument($xml);
 getLinks();
 //print_r($documents);
 //echo sizeof($documents);
+printKeywords();
 
 
 ?>
