@@ -53,3 +53,12 @@ function getEdges(documents, nodes){
     }
     return edges;
 }
+
+function getNodeAmount(nodes) {
+    var nodeAmount = 0;
+    for (var x = 0; x < nodes.length; x++) {
+        nodeAmount = nodeAmount + 1;
+    }
+    console.log(nodeAmount);
+    return nodeAmount;
+}

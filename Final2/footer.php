@@ -1,5 +1,8 @@
 
     <script>
+		console.log();
+		document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
+		document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
         // Get the modal
         var modal = document.getElementById('modal-box');
         // Get the <span> element that closes the modal
@@ -17,6 +20,7 @@
                 document.getElementsByClassName("word-graph")[0].innerHTML = "";
             }
         }
+		
     </script>
     </body>
 </html>

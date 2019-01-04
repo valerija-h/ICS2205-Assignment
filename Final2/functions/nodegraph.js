@@ -3,10 +3,13 @@ function createNodeGraph(documents){
     var temp_edges = getEdges(documents,temp_nodes);
     var nodes = new vis.DataSet(temp_nodes);
     var edges = new vis.DataSet(temp_edges);
+    var nodeAmount = getNodeAmount(nodes);
+
 
     // create a network
     var container = document.getElementById('graphic');
-    var data = {nodes: nodes, edges: edges};
+    var data = { nodes: nodes, edges: edges };
+    
     var options = {
         nodes:{
             shape: 'dot',
@@ -36,7 +39,8 @@ function createNodeGraph(documents){
     });
 
     //When clicking anything in the graph.
-    network.on( 'click', function(properties) {
+    network.on('click', function (properties) {
+        
         if(properties.edges.length > 0){
             console.log('clicked id ' + properties.edges);
             console.log('clicked node ' + edges.get(properties.edges));
