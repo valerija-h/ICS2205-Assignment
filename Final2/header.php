@@ -41,7 +41,10 @@
 		var temp_edges = getEdges(documents,temp_nodes);
 		var nodes = new vis.DataSet(temp_nodes);
 		var edges = new vis.DataSet(temp_edges);
-			
+		
+
+
+		
 			 
 			 
     </script>

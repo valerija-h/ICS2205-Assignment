@@ -4,7 +4,7 @@ function createNodeGraph(documents){
     var nodes = new vis.DataSet(temp_nodes);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
-
+    var pageRank = [];
 
     // create a network
     var container = document.getElementById('graphic');
@@ -39,9 +39,30 @@ function createNodeGraph(documents){
     });
 
     //When clicking anything in the graph.
-    network.on('click', function (properties) {
+    
+    network.on('selectNode', function (properties) {
         
-        if(properties.edges.length > 0){
+
+        if (properties.nodes.length > 0) {
+            var temp_edges = getEdges(documents, temp_nodes);
+            console.log(temp_edges);
+            for (var x = 0; x < temp_edges.length; x++) {
+                if (properties.nodes == temp_edges[x].to) {
+                   
+                }
+            }
+
+
+                var childNodes = network.getConnectedNodes(properties.nodes);
+                console.log("Iam the Selected Node : " + properties.nodes);
+                for (var i = 0; i < childNodes.length; i++) {
+                    console.log("this is childnode : " + childNodes[i] + " iam connected to Nodes : " + network.getConnectedNodes(childNodes[i]));
+                }
+                
+            }
+        });
+    network.on('selectEdge', function (properties) {
+        if (properties.edges.length > 0) {
             console.log('clicked id ' + properties.edges);
             console.log('clicked node ' + edges.get(properties.edges));
             var edge = edges.get(properties.edges);
