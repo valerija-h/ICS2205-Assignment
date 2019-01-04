@@ -22,7 +22,7 @@ function goBack() {
 	  <button onclick="goBack()">Go Back</button>
       <div class="container" style="text-align:center">
           <div class="child" style="display:inline-block">
-             <?php require 'Gabe/WordCloud/scripts/node_script.php'; ?>
+             <?php require 'word_script.php'; ?>
           </div>
       </div>
   </body>

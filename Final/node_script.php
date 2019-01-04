@@ -16,7 +16,8 @@ setcookie('your_cookie_name', json_encode($keywords), time()+3600);
 
 ?>
 <script type="text/javascript" src="functions/functions.js"></script>
- <script>
+ <script type="text/javascript">
+	 var modal = document.getElementById('myModal');
      //Setting the PHP List of Objects to JS List of Objects.
       var documents = [];
       var words = [];
@@ -38,4 +39,6 @@ setcookie('your_cookie_name', json_encode($keywords), time()+3600);
      var links = getLinks(nodes);
      var numNodes = node.length;
      createGraph(nodes,links,numNodes);
+	 
+	 
  </script>

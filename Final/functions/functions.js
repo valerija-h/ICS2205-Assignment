@@ -1,3 +1,14 @@
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+var Param = "";
+
+
+
 //Creating an array of senders.
 function getEmails(documents) {
     var emails = [];
@@ -153,19 +164,24 @@ function createGraph(nodes,links,numNodes){
             return  theClass
         })
         .on("click", function (d) {
+            var modal = document.getElementById('myModal');
             console.log(d);
             alert("You clicked on the link from node " + d.source.id + " to " + d.target.id);
+            modal.style.display = "block";
             //passing the array of keywords between the two communicators over here
             for(var x = 0; x< communicators.length; x++){
                 if((d.source.id == communicators[x].senders[0] || d.source.id == communicators[x].senders[1] ) && (d.target.id == communicators[x].senders[0] || d.target.id == communicators[x].senders[1])){
                     //console.log(communicators[x].keywords);
                     words = communicators[x].keywords;
                     var params = JSON.stringify(words);
-
-                    setCookie('myCookie',params,365);
+                    // Get the modal
+                    console.log(params);
+                    Param = params
+                    
+                    //setCookie('myCookie',params,365);
 
                     console.log(document.cookie);
-                    window.open("index2.php");
+                    //window.open("index2.php");
                     //window.location.assign('../WordCloud/index.php' + '?words=' + JSON.stringify(words));
                 }
             }
@@ -262,4 +278,7 @@ function createGraph(nodes,links,numNodes){
     // Start the initial layout
     forceLayout.start();
 
+}
+function getParam() {
+    return Param;
 }
