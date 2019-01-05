@@ -36,17 +36,7 @@
         newDoc["keywords"] = keywords;
         documents.push(newDoc);
         <?php } ?>
-        console.log(documents);
-		var temp_nodes = getNodes(documents);
-		var temp_edges = getEdges(documents,temp_nodes);
-		var nodes = new vis.DataSet(temp_nodes);
-		var edges = new vis.DataSet(temp_edges);
-		
-
-
-		
-			 
-			 
+        console.log(documents);	 
     </script>
 </head>
 <body onload="createNodeGraph(documents)">

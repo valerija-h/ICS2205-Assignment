@@ -1,20 +1,110 @@
-function createNodeGraph(documents){
+var pgRank2 = [];
+
+function findPageRankTo(temp_nodes, temp_edges) {
+    var damping_factor = 0.825;
+    var pgRank = [];
+    //setting up communicators first
+    for (var x = 0; x < temp_nodes.length; x++) {
+        var tos = [];
+        var from = 0;
+        for (var y = 0; y < temp_edges.length; y++) {
+            if (temp_nodes[x].id == temp_edges[y].from) {
+                from = temp_edges[y].from;
+                tos.push(temp_edges[y].to);
+            }
+        }
+        if (from == 0) {
+            from = x + 1;
+        }
+        var pgrank = 0;
+        if (tos.length) {
+            pgrank = 1 / tos.length;
+        } else {
+            pgrank = 0;
+        }
+        pgRank.push({
+            nodeFrom: from,
+            to: tos,
+            rank: pgrank,
+        });
+    }
+    //calculating the damping factor
+    for (var x = 0; x < pgRank.length; x++) {
+        var y = (1 - damping_factor) / pgRank.length;
+
+        pgRank[x].rank = pgRank[x].rank + y;
+    }
+    return pgRank;
+}
+
+function findPageRankFrom(pgRank) {
+    //now we need to find how many links go into a node since previously we saw how many links go out of a node.
+
+    
+    var maximumRankedNode = { nodeTo: 0, nodesFrom: [], rankOfNode: 0 };
+    var maxRank = 0;
+    for (var x = 0; x < pgRank.length; x++) {
+        var froms = [];
+        var rankOfNode = 0;
+        var to = pgRank[x].nodeFrom;
+        for (var y = 0; y < pgRank.length; y++) {
+
+            for (var z = 0; z < pgRank[y].to.length; z++) {
+                if (to == pgRank[y].to[z]) {
+                    froms.push(pgRank[y].nodeFrom);
+                    rankOfNode = rankOfNode + pgRank[y].rank;
+                }
+            }
+        }
+        pgRank2.push({
+            nodeTo: to,
+            nodesFrom: froms,
+            rankOfNode: rankOfNode,
+        });
+        if (pgRank2[x].rankOfNode >= maxRank) {
+            maxRank = pgRank2[x].rankOfNode;
+            maximumRankedNode = { nodeTo: pgRank2[x].nodeTo, nodesFrom: pgRank2[x].nodesFrom, rankOfNode: pgRank2[x].rankOfNode };
+        }
+    }
+    return maximumRankedNode;
+
+}
+function createNodeGraph(documents) {
     var temp_nodes = getNodes(documents);
-    var temp_edges = getEdges(documents,temp_nodes);
-    var nodes = new vis.DataSet(temp_nodes);
+    var temp_edges = getEdges(documents, temp_nodes);
+    var NODES = [];
+    var pgRank = findPageRankTo(temp_nodes, temp_edges);
+    var maximumRankedNode = findPageRankFrom(pgRank);
+    for (var x = 0; x < temp_nodes.length; x++) {
+        NODES.push({
+            id: temp_nodes[x].id,
+            label: temp_nodes[x].label,
+            size: pgRank2[x].rankOfNode*2,
+        });
+    }
+    
+
+
+    var nodes = new vis.DataSet(NODES);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
-    var pageRank = [];
 
+    console.log(nodes);
+
+    document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
+    document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
+    document.getElementById('highestPageRank').innerHTML += "Node with the Highest Page Rank: " + maximumRankedNode.nodeTo + " with Rank of:" + maximumRankedNode.rankOfNode;
+
+ 
     // create a network
     var container = document.getElementById('graphic');
-    var data = { nodes: nodes, edges: edges };
+    var data = { nodes: nodes, edges: temp_edges };
     
     var options = {
         nodes:{
             shape: 'dot',
-            scaling: {min: 10, max: 20},
-            size:16,
+
+            
             font: {size: 12, face: 'Tahoma'}
         },
         edges:{
@@ -30,8 +120,8 @@ function createNodeGraph(documents){
     };
     var network = new vis.Network(container, data, options);
     //Set size of the network.
-    network.setSize('1000','650');
-
+    network.setSize('1000', '650');
+    
     //Turn of physics so you can move nodes again.
     network.on("stabilizationIterationsDone", function () {
         network.setOptions( { physics: false } );
@@ -41,7 +131,6 @@ function createNodeGraph(documents){
     //When clicking anything in the graph.
     
     network.on('selectNode', function (properties) {
-        
 
         if (properties.nodes.length > 0) {
             var temp_edges = getEdges(documents, temp_nodes);
