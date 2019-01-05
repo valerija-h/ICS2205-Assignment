@@ -37,6 +37,7 @@
         documents.push(newDoc);
         <?php } ?>
         console.log(documents);	 
+
     </script>
 </head>
 <body onload="createNodeGraph(documents)">

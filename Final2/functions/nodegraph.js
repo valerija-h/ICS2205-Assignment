@@ -69,12 +69,48 @@ function findPageRankFrom(pgRank) {
     return maximumRankedNode;
 
 }
+
+function betweenCentrality(temp_edges) {
+    var betweenCentrality = [];
+    var shortPathsPassingThru = [];
+    
+    
+    for (var x = 0; x < temp_edges.length; x++) {
+        var allShortPaths = [];
+        var froms = [];
+        var tos = [];
+        for (var y = 0; y < temp_edges.length; y++) {
+
+            if (temp_edges[x].from == temp_edges[y].to) {
+                froms.push(temp_edges[y].from);
+            }
+            else if (temp_edges[x].from == temp_edges[y].from) {
+                tos.push(temp_edges[y].to);
+            }
+            else {
+                allShortPaths.push({
+                    to: temp_edges[y].from,
+                    from: temp_edges[y].to,
+                })
+            }
+        }
+        shortPathsPassingThru.push({
+            node: temp_edges[x].from,
+            tos: tos,
+            froms: froms,
+            allothers: allShortPaths
+        });
+    }
+    console.log(shortPathsPassingThru);
+}
+
 function createNodeGraph(documents) {
     var temp_nodes = getNodes(documents);
     var temp_edges = getEdges(documents, temp_nodes);
     var NODES = [];
     var pgRank = findPageRankTo(temp_nodes, temp_edges);
     var maximumRankedNode = findPageRankFrom(pgRank);
+    betweenCentrality(temp_edges);
     //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
         NODES.push({
@@ -83,7 +119,7 @@ function createNodeGraph(documents) {
             size: pgRank2[x].rankOfNode*2,
         });
     }
-    
+    console.log(temp_edges);
     var nodes = new vis.DataSet(NODES);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
