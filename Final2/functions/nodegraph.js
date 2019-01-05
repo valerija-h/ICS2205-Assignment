@@ -70,38 +70,41 @@ function findPageRankFrom(pgRank) {
 
 }
 
-function betweenCentrality(temp_edges) {
+function betweenCentrality(temp_edges, temp_nodes) {
     var betweenCentrality = [];
     var shortPathsPassingThru = [];
     
     
-    for (var x = 0; x < temp_edges.length; x++) {
+    for (var x = 0; x < temp_nodes.length; x++) {
         var allShortPaths = [];
         var froms = [];
         var tos = [];
         for (var y = 0; y < temp_edges.length; y++) {
 
-            if (temp_edges[x].from == temp_edges[y].to) {
+            if (x == temp_edges[y].to) {
                 froms.push(temp_edges[y].from);
             }
-            else if (temp_edges[x].from == temp_edges[y].from) {
+            else if (x == temp_edges[y].from) {
                 tos.push(temp_edges[y].to);
             }
             else {
                 allShortPaths.push({
-                    to: temp_edges[y].from,
-                    from: temp_edges[y].to,
-                })
+                    to: temp_edges[y].to,
+                    from: temp_edges[y].from
+                });
             }
+
         }
         shortPathsPassingThru.push({
-            node: temp_edges[x].from,
+            node: x,
             tos: tos,
             froms: froms,
             allothers: allShortPaths
         });
     }
     console.log(shortPathsPassingThru);
+
+  
 }
 
 function createNodeGraph(documents) {
@@ -110,7 +113,7 @@ function createNodeGraph(documents) {
     var NODES = [];
     var pgRank = findPageRankTo(temp_nodes, temp_edges);
     var maximumRankedNode = findPageRankFrom(pgRank);
-    betweenCentrality(temp_edges);
+    betweenCentrality(temp_edges, temp_nodes);
     //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
         NODES.push({
