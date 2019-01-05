@@ -22,6 +22,7 @@
 		<p id="nodeAmount"></p>
 		<p id="edgesAmount"></p>
 		<p id="highestPageRank"></p>
+		<p id="activeNode"></p>
 	</div>
     <!-- Word Graph -->
     <div id="modal-box">

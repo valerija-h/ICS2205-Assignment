@@ -97,14 +97,32 @@ function betweenCentrality(temp_edges, temp_nodes) {
         }
         shortPathsPassingThru.push({
             node: x,
-            tos: tos,
-            froms: froms,
+            to: tos,
+            from: froms,
             allothers: allShortPaths
         });
     }
-    console.log(shortPathsPassingThru);
 
-  
+    var max = 0;
+    var activeNode = { node:0, betweenCentrality:0 };
+    for (var x = 0; x<shortPathsPassingThru.length; x++) {
+        var pathsThru = shortPathsPassingThru[x].to.length + shortPathsPassingThru[x].from.length;
+        var otherPaths = shortPathsPassingThru[x].allothers.length;
+        var betweeness = pathsThru / otherPaths;
+        
+        betweenCentrality.push({
+            node: shortPathsPassingThru[x].node,
+            betweeness: betweeness,
+        });
+
+        if (betweeness >= max) {
+            max = betweeness;
+            activeNode = { node: betweenCentrality[x].node, betweenCentrality: betweenCentrality[x].betweeness };
+        }
+    }
+
+    return activeNode;
+    
 }
 
 function createNodeGraph(documents) {
@@ -113,14 +131,23 @@ function createNodeGraph(documents) {
     var NODES = [];
     var pgRank = findPageRankTo(temp_nodes, temp_edges);
     var maximumRankedNode = findPageRankFrom(pgRank);
-    betweenCentrality(temp_edges, temp_nodes);
+    var activeNode = betweenCentrality(temp_edges, temp_nodes);
     //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
-        NODES.push({
-            id: temp_nodes[x].id,
-            label: temp_nodes[x].label,
-            size: pgRank2[x].rankOfNode*2,
-        });
+        if (temp_nodes[x].id == activeNode.node) {
+            NODES.push({
+                id: temp_nodes[x].id,
+                label: temp_nodes[x].label,
+                size: pgRank2[x].rankOfNode * 2,
+                color: 'red',
+            });
+        } else {
+            NODES.push({
+                id: temp_nodes[x].id,
+                label: temp_nodes[x].label,
+                size: pgRank2[x].rankOfNode * 2,
+            });
+        }
     }
     console.log(temp_edges);
     var nodes = new vis.DataSet(NODES);
@@ -130,7 +157,7 @@ function createNodeGraph(documents) {
     document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
     document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
     document.getElementById('highestPageRank').innerHTML += "Node with the Highest Page Rank: " + maximumRankedNode.nodeTo + " with Rank of:" + maximumRankedNode.rankOfNode;
- 
+    document.getElementById('activeNode').innerHTML += "Most Active Node is: " + activeNode.node + " with betweeness centrality of: " + activeNode.betweenCentrality;
     // create a network
     var container = document.getElementById('graphic');
     var data = { nodes: nodes, edges: temp_edges };
