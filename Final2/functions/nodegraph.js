@@ -75,6 +75,7 @@ function createNodeGraph(documents) {
     var NODES = [];
     var pgRank = findPageRankTo(temp_nodes, temp_edges);
     var maximumRankedNode = findPageRankFrom(pgRank);
+    //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
         NODES.push({
             id: temp_nodes[x].id,
@@ -83,18 +84,13 @@ function createNodeGraph(documents) {
         });
     }
     
-
-
     var nodes = new vis.DataSet(NODES);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
 
-    console.log(nodes);
-
     document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
     document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
     document.getElementById('highestPageRank').innerHTML += "Node with the Highest Page Rank: " + maximumRankedNode.nodeTo + " with Rank of:" + maximumRankedNode.rankOfNode;
-
  
     // create a network
     var container = document.getElementById('graphic');
@@ -103,8 +99,6 @@ function createNodeGraph(documents) {
     var options = {
         nodes:{
             shape: 'dot',
-
-            
             font: {size: 12, face: 'Tahoma'}
         },
         edges:{
@@ -140,8 +134,6 @@ function createNodeGraph(documents) {
                    
                 }
             }
-
-
                 var childNodes = network.getConnectedNodes(properties.nodes);
                 console.log("Iam the Selected Node : " + properties.nodes);
                 for (var i = 0; i < childNodes.length; i++) {
