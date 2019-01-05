@@ -30,13 +30,13 @@ function createKeyCloud(keywords){
             .selectAll("text")
             .data(words)
             .enter().append("text")
-            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-size", function (d) { return d.size + "px"; })
             .style("font-family", "Impact")
-            .style("fill", function(d, i) { return fill(i); })
+            .style("fill", function (d, i) { return fill(i); })
             .attr("text-anchor", "middle")
-            .attr("transform", function(d) {
+            .attr("transform", function (d) {
                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
-            .text(function(d) { return d.text; })
+            .text(function (d) { return d.text; });
     }
 }
