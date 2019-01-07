@@ -75,17 +75,17 @@ function getNodes(documents) {
     //For each document if sender is not in array send it!
     for (var x = 0; x < documents.length; x++) {
         //For each document check if sender exists in emails, if not, add it.
-        if (!ifExists(nodes,documents[x].senders[0])) {
+        if (!ifExists(nodes,documents[x].to)) {
             nodes.push({
                 id: counter,
-                label: documents[x].senders[0]
+                label: documents[x].to
             });
             counter++;
         }
-        if (!ifExists(nodes,documents[x].senders[1])) {
+        if (!ifExists(nodes,documents[x].from)) {
             nodes.push({
                 id: counter,
-                label: documents[x].senders[1]
+                label: documents[x].from
             });
             counter++;
         }
@@ -101,6 +101,8 @@ function getIndex(nodes, string){
     }
     return 0;
 }
+
+//Check if string exists in the nodes array.
 function ifExists(nodes, string){
     var found = false;
     for(var i = 0; i < nodes.length; i++) {
@@ -117,8 +119,8 @@ function getEdges(documents, nodes){
     //For each document, push the from and to
     for (var x = 0; x < documents.length; x++) {
         edges.push({
-            from: getIndex(nodes, documents[x].senders[0]),
-            to: getIndex(nodes, documents[x].senders[1]),
+            from: getIndex(nodes, documents[x].from),
+            to: getIndex(nodes, documents[x].to),
             keywords: documents[x].keywords
         })
     }

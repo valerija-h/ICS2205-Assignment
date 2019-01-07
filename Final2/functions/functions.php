@@ -11,7 +11,8 @@ $stopWords = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you"
 
 //Some objects that will be needed.
 class Document{
-    public $senders=[];
+    public $to=[];
+    public $from=[];
     public $keywords=[];
     public $keywordsFreqs=[];
     public $keywordsWeights=[];
@@ -58,7 +59,8 @@ function appendDoc($from, $receiver, $keywords){
     //Check if senders already exist in a doc and merge that to the array.
     foreach($documents as $document){
         //If the senders already have a document.
-        if(in_array($from,$document->senders) && in_array($receiver,$document->senders)){
+        //in_array($from,$document->senders) && in_array($receiver,$document->senders)
+        if($document->from == $from && $document->to == $receiver){
             //Append them to the current documents and return.
             $document->keywords = array_merge($document->keywords, $keywords);
             return;
@@ -66,7 +68,8 @@ function appendDoc($from, $receiver, $keywords){
     }
     //Otherwise make a new Document and add it to the global array.
     $newDoc = new Document();
-    $newDoc->senders = [$from,$receiver];
+    $newDoc->to = $receiver;
+    $newDoc->from = $from;
     $newDoc->keywords = $keywords;
     array_push($documents, $newDoc);
 }
@@ -79,7 +82,8 @@ function createDoc($from, $receivers, $keywords){
         //Create first object in documents array else appends/merges a document object.
         if(empty($documents)) {
             $tempDoc = new Document();
-            $tempDoc->senders = [$from,$receiver];
+            $tempDoc->to = $receiver;
+            $tempDoc->from = $from;
             $tempDoc->keywords = $keywords;
             array_push($documents, $tempDoc);
         } else {
@@ -175,43 +179,43 @@ function getDocNo($word){
     return $docNumber;
 }
 
-function printSenders(){
-    global $documents;
-    foreach($documents as $document){
-        print_r($document->senders);
-        echo "\n";
-    }
-}
-
-function getSenders(){
-    $senders = [];
-    global $documents;
-    foreach($documents as $document){
-       foreach($document->senders as $sender){
-           if(!in_array($sender, $senders)){
-               array_push($senders, $sender);
-           }
-        }
-    }
-    return $senders;
-}
-
-function getLinks(){
-    $senders = getSenders();
-    global $documents;
-    //for each sender
-    //check in documents how many times they appear in a documents array.
-    //print out name and frequency
-    foreach($senders as $key=>$sender){
-        $frequency = 0;
-        foreach($documents as $document){
-            if(in_array($sender,$document->senders)){
-                $frequency += 1;
-            }
-        }
-        echo $key. ". " . $sender . " Frequency: " . $frequency . "<br><br>";
-    }
-}
+//function printSenders(){
+//    global $documents;
+//    foreach($documents as $document){
+//        print_r($document->senders);
+//        echo "\n";
+//    }
+//}
+//
+//function getSenders(){
+//    $senders = [];
+//    global $documents;
+//    foreach($documents as $document){
+//       foreach($document->senders as $sender){
+//           if(!in_array($sender, $senders)){
+//               array_push($senders, $sender);
+//           }
+//        }
+//    }
+//    return $senders;
+//}
+//
+//function getLinks(){
+//    $senders = getSenders();
+//    global $documents;
+//    //for each sender
+//    //check in documents how many times they appear in a documents array.
+//    //print out name and frequency
+//    foreach($senders as $key=>$sender){
+//        $frequency = 0;
+//        foreach($documents as $document){
+//            if(in_array($sender,$document->senders)){
+//                $frequency += 1;
+//            }
+//        }
+//        echo $key. ". " . $sender . " Frequency: " . $frequency . "<br><br>";
+//    }
+//}
 
 function multiexplode ($delimiters,$string) {
     $ready = str_replace($delimiters, $delimiters[0], $string);

@@ -138,14 +138,14 @@ function createNodeGraph(documents) {
             NODES.push({
                 id: temp_nodes[x].id,
                 label: temp_nodes[x].label,
-                size: pgRank2[x].rankOfNode * 2,
+                size: pgRank2[x].rankOfNode+5,
                 color: 'red',
             });
         } else {
             NODES.push({
                 id: temp_nodes[x].id,
                 label: temp_nodes[x].label,
-                size: pgRank2[x].rankOfNode * 2,
+                size: pgRank2[x].rankOfNode+5,
             });
         }
     }
@@ -153,6 +153,9 @@ function createNodeGraph(documents) {
     var nodes = new vis.DataSet(NODES);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
+    console.log(pgRank);
+    console.log(nodes);
+    console.log(edges);
 
     document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
     document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;

@@ -29,11 +29,11 @@
         var documents = [];
         //Appending each document from php to the JS documents array.
         <?php foreach($documents as $document) { ?>
-        var senders = <?= json_encode($document->senders) ?> ;
         var keywords = <?= json_encode($document->keywordsWeights) ?> ;
         var newDoc = {};
-        newDoc["senders"] = senders;
         newDoc["keywords"] = keywords;
+        newDoc["to"] = <?= json_encode($document->to) ?> ;
+        newDoc["from"] = <?= json_encode($document->from) ?> ;
         documents.push(newDoc);
         <?php } ?>
         console.log(documents);	 
