@@ -116,12 +116,14 @@ function ifExists(nodes, string){
 
 function getEdges(documents, nodes){
     var edges = [];
+    console.log(documents);
     //For each document, push the from and to
     for (var x = 0; x < documents.length; x++) {
         edges.push({
             from: getIndex(nodes, documents[x].from),
             to: getIndex(nodes, documents[x].to),
-            keywords: documents[x].keywords
+            keywords: documents[x].keywords,
+            width: documents[x].emailNo
         })
     }
     return edges;

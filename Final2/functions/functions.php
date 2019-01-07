@@ -16,6 +16,7 @@ class Document{
     public $keywords=[];
     public $keywordsFreqs=[];
     public $keywordsWeights=[];
+    public $emailNo=0;
 }
 
 //In the keywordsWeights state, each keyword will be stored using this.
@@ -63,6 +64,7 @@ function appendDoc($from, $receiver, $keywords){
         if($document->from == $from && $document->to == $receiver){
             //Append them to the current documents and return.
             $document->keywords = array_merge($document->keywords, $keywords);
+            $document->emailNo++;
             return;
         }
     }
@@ -71,6 +73,7 @@ function appendDoc($from, $receiver, $keywords){
     $newDoc->to = $receiver;
     $newDoc->from = $from;
     $newDoc->keywords = $keywords;
+    $newDoc->emailNo++;
     array_push($documents, $newDoc);
 }
 
@@ -85,6 +88,7 @@ function createDoc($from, $receivers, $keywords){
             $tempDoc->to = $receiver;
             $tempDoc->from = $from;
             $tempDoc->keywords = $keywords;
+            $tempDoc->emailNo++;
             array_push($documents, $tempDoc);
         } else {
             //Either creates a new doc or adds to a previous one.

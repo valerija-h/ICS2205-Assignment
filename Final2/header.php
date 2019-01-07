@@ -34,6 +34,7 @@
         newDoc["keywords"] = keywords;
         newDoc["to"] = <?= json_encode($document->to) ?> ;
         newDoc["from"] = <?= json_encode($document->from) ?> ;
+        newDoc["emailNo"] = <?= json_encode($document->emailNo) ?> ;
         documents.push(newDoc);
         <?php } ?>
         console.log(documents);	 
