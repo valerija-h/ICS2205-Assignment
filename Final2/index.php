@@ -4,7 +4,7 @@
     <div class="node-graph">
         <div class="text-container">
             <h2>Users Node Graph</h2>
-            <p>The follow graph displays a network consisting of email users and the emails shared between them. Each node represents a person, and their edges represent their email conversations with another person. Each edge stores the keywords used in the email conversations. For best experience set zoom of the page to default (100%).</p>
+            <p>The follow graph displays a network consisting of email users and the emails shared between them. Each node represents a person, and their edges represent their email conversations with another person. Each edge stores the keywords used in the email conversations.</p>
             <p><b>How to use the node graph:</b></p>
             <ul>
                 <li>Zoom in and out of the graph by using the mouse scroll.</li>
@@ -18,7 +18,8 @@
 
         </div>
     </div>
-	<div id="box">
+	<div class="text-container">
+        <p><b>Additional Information:</b></p>
 		<p id="nodeAmount"></p>
 		<p id="edgesAmount"></p>
 		<p id="highestPageRank"></p>

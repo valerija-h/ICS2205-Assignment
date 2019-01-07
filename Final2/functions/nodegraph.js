@@ -174,8 +174,8 @@ function createNodeGraph(documents) {
 
     document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
     document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
-    document.getElementById('highestPageRank').innerHTML += "Node with the Highest Page Rank: " + maximumRankedNode.nodeTo + " with Rank of:" + maximumRankedNode.rankOfNode;
-    document.getElementById('activeNode').innerHTML += "Most Active Node is: " + activeNode.node + " with betweeness centrality of: " + activeNode.betweenCentrality;
+    document.getElementById('highestPageRank').innerHTML += "Node with the Highest Page Rank: " + nodes.get(maximumRankedNode.nodeTo).label + " (Node ID:" + maximumRankedNode.nodeTo +") with Rank of: " + maximumRankedNode.rankOfNode;
+    document.getElementById('activeNode').innerHTML += "Most Active Node is: " + nodes.get(activeNode.node).label + " (Node ID:" + activeNode.node +") with Betweeness Centrality of: " + activeNode.betweenCentrality;
     // create a network
     var container = document.getElementById('graphic');
     var data = { nodes: nodes, edges: temp_edges };
@@ -195,7 +195,7 @@ function createNodeGraph(documents) {
         },
         physics:{
             enabled:true,
-            stabilization: {iterations: 200},
+            stabilization: {iterations: 250}
         }
     };
     var network = new vis.Network(container, data, options);
