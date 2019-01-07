@@ -125,6 +125,21 @@ function betweenCentrality(temp_edges, temp_nodes) {
     
 }
 
+function getActivity(temp_edges,temp_nodes){
+    var activity = [];
+    //For each node, get the number of emails from each surrounding edge.
+    for (var x = 0; x < temp_nodes.length; x++) {
+        var total = 0;
+        for(var y = 0; y < temp_edges.length; y++){
+            if(temp_edges[y].to == temp_nodes[x].id || temp_edges[y].from == temp_nodes[x].id){
+                total +=  parseInt(temp_edges[y].width, 10);
+            }
+        }
+        activity.push(total);
+    }
+return activity;
+}
+
 function createNodeGraph(documents) {
     var temp_nodes = getNodes(documents);
     var temp_edges = getEdges(documents, temp_nodes);
