@@ -171,7 +171,9 @@ function createNodeGraph(documents) {
             font: {size: 12, face: 'Tahoma'}
         },
         edges:{
-            smooth: {enabled: true, type: "dynamic", roundness: 0.5}
+            smooth: {enabled: true, type: "dynamic", roundness: 0.5},
+            arrows:{to:{enabled: true, scaleFactor:1, type:'arrow'}},
+            arrowStrikethrough: false
         },
         layout:{
             improvedLayout:false
