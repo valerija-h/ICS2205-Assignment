@@ -21,6 +21,7 @@
         parseDocument($xml);
     ?>
     <!-- Internal Files -->
+	<script type="text/javascript" src ="functions/dijkstra.js"></script>
     <script type="text/javascript" src="functions/functions.js"></script>
     <script type="text/javascript" src="functions/keyword.js"></script>
     <script type="text/javascript" src="functions/nodegraph.js"></script>

@@ -6,6 +6,9 @@ function createNodeGraph(documents) {
     var maximumRankedNode = findPageRankFrom(pgRank);
     var activeNode = betweenCentrality(temp_edges, temp_nodes);
     var pgRank2 = getPgRank2();
+
+    var activity = getActivity(temp_edges, temp_nodes);
+
     //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
         if (temp_nodes[x].id == activeNode.node) {
@@ -19,17 +22,13 @@ function createNodeGraph(documents) {
             NODES.push({
                 id: temp_nodes[x].id,
                 label: temp_nodes[x].label,
-                size: pgRank2[x].rankOfNode+5,
+                size: activity[x] + 5,
             });
         }
     }
-    console.log(temp_edges);
     var nodes = new vis.DataSet(NODES);
     var edges = new vis.DataSet(temp_edges);
     var nodeAmount = getNodeAmount(nodes);
-    console.log(pgRank);
-    console.log(nodes);
-    console.log(edges);
 
     document.getElementById('nodeAmount').innerHTML += "Number of Nodes: " + nodes.length;
     document.getElementById('edgesAmount').innerHTML += "Number of Edges: " + edges.length;
