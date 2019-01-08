@@ -86,6 +86,12 @@ function getActivity(temp_edges,temp_nodes){
     return activity;
 }
 
+var averagePaths = [];
+function getAveragePaths() {
+    return averagePaths;
+}
+
+
 //calculates the between centrality of each node
 function betweenCentrality(temp_edges, temp_nodes) {
     console.log(temp_edges);
@@ -178,14 +184,18 @@ function betweenCentrality(temp_edges, temp_nodes) {
         //get all solutions
         var solutions = solve(graph, start);
 
-        console.log("From '" + start + "' to");
+        //console.log("From '" + start + "' to");
         //display solutions
         for (var s in solutions) {
             if (!solutions[s]) continue;
-            console.log(" -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")");
+            averagePaths.push({
+                from: x,
+                to: " -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")"
+            });
+            //console.log(" -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")");
         }
     }
-
+    console.log(averagePaths);
     console.log(layout);
     console.log(solutions);
 

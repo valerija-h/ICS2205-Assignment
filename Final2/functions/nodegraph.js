@@ -69,20 +69,28 @@ function createNodeGraph(documents) {
     //When clicking anything in the graph.
     
     network.on('selectNode', function (properties) {
-
+        document.getElementById('avergePath').innerHTML = "";
         if (properties.nodes.length > 0) {
             var temp_edges = getEdges(documents, temp_nodes);
-            console.log(temp_edges);
+            
             for (var x = 0; x < temp_edges.length; x++) {
                 if (properties.nodes == temp_edges[x].to) {
                    
                 }
             }
+           
                 var childNodes = network.getConnectedNodes(properties.nodes);
                 console.log("Iam the Selected Node : " + properties.nodes);
                 for (var i = 0; i < childNodes.length; i++) {
                     console.log("this is childnode : " + childNodes[i] + " iam connected to Nodes : " + network.getConnectedNodes(childNodes[i]));
+            }
+            var avgPath = getAveragePaths();
+            document.getElementById('avergePath').innerHTML += "From Node: " + properties.nodes[0] + " to: <br />";
+            for (var i = 0; i < avgPath.length; i++) {
+                if (properties.nodes[0] == avgPath[i].from) {
+                    document.getElementById('avergePath').innerHTML += avgPath[i].to + "<br />";
                 }
+            }
                 
             }
         });

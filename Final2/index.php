@@ -24,6 +24,7 @@
 		<p id="edgesAmount"></p>
 		<p id="highestPageRank"></p>
 		<p id="activeNode"></p>
+		<p id="avergePath"></p>
 	</div>
     <!-- Word Graph -->
     <div id="modal-box">
