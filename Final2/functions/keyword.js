@@ -8,6 +8,7 @@ function createKeyCloud(keywords){
         })
     }
 
+    //width and height of the wordcloud
     var w = 960,
         h = 600;
 
@@ -21,6 +22,7 @@ function createKeyCloud(keywords){
         .on("end", draw)
         .start();
 
+    //function to draw the wordcloud
     function draw(words, bounds) {
         d3.select(".word-graph").append("svg")
             .attr("width", w)

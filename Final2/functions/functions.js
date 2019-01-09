@@ -104,21 +104,6 @@ function betweenCentrality(temp_edges, temp_nodes) {
 
     }
 
-    //convert uni-directional to bi-directional graph
-    // needs to look like: where: { a: { b: cost of a->b }
-    // var graph = {
-    //     a: {e:1, b:1, g:3},
-    //     b: {a:1, c:1},
-    //     c: {b:1, d:1},
-    //     d: {c:1, e:1},
-    //     e: {d:1, a:1},
-    //     f: {g:1, h:1},
-    //     g: {a:3, f:1},
-    //     h: {f:1}
-    // };
-
-
-
     for (var x = 0; x < temp_nodes.length; x++) {
         var allPossiblePaths = []; // disjktra
         var allPossibleShortPaths = [];
@@ -177,29 +162,35 @@ function betweenCentrality(temp_edges, temp_nodes) {
             graph[aid][id] = 1;
         });
     }
-
+    console.log(temp_nodes);
     for (var x = 0; x<temp_nodes.length; x++) {
         //choose start node
         var start = '' + x;
         //get all solutions
         var solutions = solve(graph, start);
-
+        var label = "";
         //console.log("From '" + start + "' to");
         //display solutions
         for (var s in solutions) {
+            
             if (!solutions[s]) continue;
+            for (var y = 0; y < temp_nodes.length; y++) {
+                if (temp_nodes[y].id == s) {
+                    label = temp_nodes[y].label;
+                }
+            }
             averagePaths.push({
+
                 from: x,
-                to: " -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")"
+                to: " -> " + s + " [ " + label + " ] " + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")"
             });
-            //console.log(" -> " + s + ": [" + solutions[s].join(", ") + "]   (dist:" + solutions[s].dist + ")");
+            
         }
     }
-    console.log(averagePaths);
-    console.log(layout);
-    console.log(solutions);
+
 
     var max = 0;
+    //finding the most active node
     var activeNode = { node:0, betweenCentrality:0 };
     for (var x = 0; x<shortPathsPassingThru.length; x++) {
         var pathsThru = shortPathsPassingThru[x].to.length + shortPathsPassingThru[x].from.length;
@@ -268,6 +259,7 @@ function findPageRankFrom(pgRank) {
     //now we need to find how many links go into a node since previously we saw how many links go out of a node.
     var maximumRankedNode = { nodeTo: 0, nodesFrom: [], rankOfNode: 0 };
     var maxRank = 0;
+    //add up all the ranks going in a node to establish the result pgrank of a node
     for (var x = 0; x < pgRank.length; x++) {
         var froms = [];
         var rankOfNode = 0;
@@ -286,6 +278,7 @@ function findPageRankFrom(pgRank) {
             nodesFrom: froms,
             rankOfNode: rankOfNode,
         });
+        //finding the node with the highest pgrank
         if (pgRank2[x].rankOfNode >= maxRank) {
             maxRank = pgRank2[x].rankOfNode;
             maximumRankedNode = { nodeTo: pgRank2[x].nodeTo, nodesFrom: pgRank2[x].nodesFrom, rankOfNode: pgRank2[x].rankOfNode };
