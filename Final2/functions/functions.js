@@ -168,6 +168,7 @@ function betweenCentrality(temp_edges, temp_nodes) {
         var start = '' + x;
         //get all solutions
         var solutions = solve(graph, start);
+        
         var label = "";
         //console.log("From '" + start + "' to");
         //display solutions
@@ -187,7 +188,6 @@ function betweenCentrality(temp_edges, temp_nodes) {
             
         }
     }
-
 
     var max = 0;
     //finding the most active node
