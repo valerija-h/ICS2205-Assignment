@@ -7,9 +7,8 @@ function createNodeGraph(documents) {
     var maximumRankedNode = findPageRankFrom(pgRank);                     
     var activeNode = betweenCentrality(temp_edges, temp_nodes);            
     var pgRank2 = getPgRank2();                                         //result pgrank of each node
-
     var activity = getActivity(temp_edges, temp_nodes);
-
+    console.log(activity);
     //pushing the size according to the pg rank to each node
     for (var x = 0; x < temp_nodes.length; x++) {
         //the most active node is coloured red
@@ -17,7 +16,7 @@ function createNodeGraph(documents) {
             NODES.push({
                 id: temp_nodes[x].id,
                 label: temp_nodes[x].label,
-                size: pgRank2[x].rankOfNode+5,
+                size: activity[x] + 5,
                 color: 'red',
             });
         }
@@ -27,6 +26,7 @@ function createNodeGraph(documents) {
                 id: temp_nodes[x].id,
                 label: temp_nodes[x].label,
                 size: activity[x] + 5,
+                
             });
         }
     }
@@ -81,13 +81,7 @@ function createNodeGraph(documents) {
     network.on('selectNode', function (properties) {
         document.getElementById('avergePath').innerHTML = "";
         if (properties.nodes.length > 0) {
-            var temp_edges = getEdges(documents, temp_nodes);
-            
-            for (var x = 0; x < temp_edges.length; x++) {
-                if (properties.nodes == temp_edges[x].to) {
-                   
-                }
-            }
+
                 //outputs the children of the child nodees
                 var childNodes = network.getConnectedNodes(properties.nodes);
                 console.log("Iam the Selected Node : " + properties.nodes);
