@@ -94,15 +94,13 @@ function getAveragePaths() {
 
 //calculates the between centrality of each node
 function betweenCentrality(temp_edges, temp_nodes) {
-    console.log(temp_edges);
+  
     var betweenCentrality = [];
     var shortPathsPassingThru = [];
     //create graph
     var graph = {};
 
-    var layout = {
-
-    }
+    var layout = {};
 
     for (var x = 0; x < temp_nodes.length; x++) {
         var allPossiblePaths = []; // disjktra
@@ -114,28 +112,20 @@ function betweenCentrality(temp_edges, temp_nodes) {
 
             if (x == temp_edges[y].to) {
                 froms.push(temp_edges[y].from);
+                //for dijkstra
+                allPossiblePaths.push('' + (temp_edges[y].from));
             }
             else if (x == temp_edges[y].from) {
                 tos.push(temp_edges[y].to);
+                //for dijkstra
+                allPossiblePaths.push('' + (temp_edges[y].to));
             }
             else {
                 allShortPaths.push({
                     to: temp_edges[y].to,
                     from: temp_edges[y].from
                 });
-            }
 
-        }
-        //disjktra's
-        for (var y = 0; y < temp_edges.length; y++) {
-            
-            if (x == temp_edges[y].to || x == temp_edges[y].from) {
-                if (x == temp_edges[y].to) {
-                    
-                    allPossiblePaths.push('' +(temp_edges[y].from));
-                } else {
-                    allPossiblePaths.push('' +(temp_edges[y].to));
-                }
             }
 
         }
@@ -152,7 +142,7 @@ function betweenCentrality(temp_edges, temp_nodes) {
         });
     }
 
-        for (var id in layout) {
+    for (var id in layout) {
         if (!graph[id])
             graph[id] = {};
         layout[id].forEach(function (aid) {
@@ -162,7 +152,7 @@ function betweenCentrality(temp_edges, temp_nodes) {
             graph[aid][id] = 1;
         });
     }
-    console.log(temp_nodes);
+
     for (var x = 0; x<temp_nodes.length; x++) {
         //choose start node
         var start = '' + x;
@@ -295,17 +285,3 @@ function findPageRankFrom(pgRank) {
 
 }
 
-function getActivity(temp_edges, temp_nodes) {
-    var activity = [];
-    //For each node, get the number of emails from each surrounding edge.
-    for (var x = 0; x < temp_nodes.length; x++) {
-        var total = 0;
-        for (var y = 0; y < temp_edges.length; y++) {
-            if (temp_edges[y].to == temp_nodes[x].id || temp_edges[y].from == temp_nodes[x].id) {
-                total += parseInt(temp_edges[y].width, 10);
-            }
-        }
-        activity.push(total);
-    }
-    return activity;
-}
