@@ -99,17 +99,17 @@ function cleanUpMsg($message){
     global $stopWords;
     $keywords = [];
     //Tokenizer to parse text.
-    $tok = strtok($message, " ,-()\n<>");
+    $tok = strtok($message, " \n\r");
     while ($tok !== false) {
         //Make word lowercase and strip '.' from end of string!
-        $tok = rtrim(strtolower($tok),'.');
+        $tok = trim(strtolower($tok),'.,:;\'"()?!-#<>*&%|');
         //Check if it is a stop word - if not add to the array!
-        if (!in_array($tok, $stopWords)) {
+        if (!in_array($tok, $stopWords) && !empty($tok)) {
             //Porter Stemmer Library - gets the stem of the word.
             $tok = PorterStemmer::Stem($tok);
             array_push($keywords, $tok);
         }
-        $tok = strtok(" ,-()\n<>");
+        $tok = strtok(" \n\r");
     }
     return $keywords;
 }
