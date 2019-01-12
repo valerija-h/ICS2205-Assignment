@@ -11,6 +11,7 @@
                 <li>Move around the graph by clicking and dragging on the whitespace.</li>
                 <li>Click on an edge to open up a keyword cloud.</li>
                 <li>Click on a node to see the edges it is connected to.</li>
+                <li>Click on a node and scroll down to the Additional Information section on the page to see the shortest path between the selected node to other nodes.</li>
                 <li>Click and drag on a node to move it around the graph.</li>
             </ul>
         </div>
