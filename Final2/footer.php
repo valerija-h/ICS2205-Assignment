@@ -1,23 +1,17 @@
 
     <script>
-        // Get the modal
-        var modal = document.getElementById('modal-box');
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
+        //Closes the modal box when the user presses the cross.
+        document.getElementsByClassName("close")[0].onclick = function() {
+            document.getElementById('modal-box').style.display = "none";
             document.getElementsByClassName("word-graph")[0].innerHTML = "";
         };
-        // When the user clicks anywhere outside of the modal, close it
+        //Closes the modal box when the user clicks on area outside the box.
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target == document.getElementById('modal-box')) {
+                document.getElementById('modal-box').style.display = "none";
                 document.getElementsByClassName("word-graph")[0].innerHTML = "";
             }
         }
-		
     </script>
     </body>
 </html>
