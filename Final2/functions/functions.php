@@ -102,7 +102,7 @@ function cleanUpMsg($message){
     $tok = strtok($message, " \n\r");
     while ($tok !== false) {
         //Make word lowercase and strip '.' from end of string!
-        $tok = trim(htmlspecialchars_decode(strtolower($tok)),'.,:;\'"()?!-#<>*&%|');
+        $tok = trim(htmlspecialchars_decode(strtolower($tok)),'.,:;\'"()?!-#<>*&%|\/$@~');
         //Check if it is a stop word - if not add to the array!
         if (!in_array($tok, $stopWords) && !empty($tok)) {
             //Porter Stemmer Library - gets the stem of the word.
